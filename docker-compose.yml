@@ -1,0 +1,7 @@
+version: "3.5"
+services:
+  instagram:
+    container_name: instagram
+    image: instagram:latest
+    ports:
+      - "9999:4000"
