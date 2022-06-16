@@ -7,6 +7,7 @@ import { BasicPage } from "./pages/BasicPage"
 import { LoginPage } from "./pages/LoginPage"
 import { PreHomePage } from "./pages/PreHomePage"
 import { HomePage } from "./pages/HomePage"
+import { UserPage } from "./pages/UserPage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import theme from "./theme"
 import { QueryClient, QueryClientProvider } from "react-query"
@@ -45,7 +46,14 @@ export const App = () => {
                   </ProtectedRoute>
                 }
               />
-
+              <Route
+                path="/@:username"
+                element={
+                  <ProtectedRoute>
+                    <UserPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/login"
                 element={
