@@ -35,7 +35,7 @@ const MobileUserCard = ({ user }: { user: User }) => {
   return (
     <VStack alignItems={"start"} spacing={6}>
       <HStack spacing={6}>
-        <Avatar size={"xl"} src={user.profilePicUrl} />
+        <Avatar size={"xl"} src={`/api/cors/${user.profilePicUrl}`} />
         <VStack spacing={0}>
           <Badge fontSize="0.9rem">{user.mediaCount}</Badge>
           <Box fontWeight="semibold">publicaciones</Box>
@@ -73,7 +73,7 @@ const DesktopUserCard = ({ user }: { user: User }) => {
     <HStack alignItems={"start"} spacing={6}>
       <Box w={"40%"} alignItems={"center"}>
         <VStack spacing={6}>
-          <Avatar size={"2xl"} src={user.hdProfilePicUrl} />
+          <Avatar size={"2xl"} src={`/api/cors/${user.hdProfilePicUrl}`} />
           <HStack textAlign={"center"}>
             <VStack spacing={0}>
               <Badge fontSize="0.9rem">{user.mediaCount}</Badge>
