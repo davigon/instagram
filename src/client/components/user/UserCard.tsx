@@ -37,10 +37,6 @@ const MobileUserCard = ({ user }: { user: User }) => {
       <HStack spacing={6}>
         <Avatar size={"xl"} src={`/api/cors/${user.profilePicUrl}`} />
         <VStack spacing={0}>
-          <Badge fontSize="0.9rem">{user.mediaCount}</Badge>
-          <Box fontWeight="semibold">publicaciones</Box>
-        </VStack>
-        <VStack spacing={0}>
           <Badge fontSize="0.9rem">{user.followerCount}</Badge>
           <Box fontWeight="semibold">seguidores</Box>
         </VStack>
