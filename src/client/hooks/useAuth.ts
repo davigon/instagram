@@ -10,6 +10,15 @@ type LoginRequest = {
   password: string
 }
 
+export type UseAuthType = {
+  login: (username: string, password: string) => void
+  isLoadingLogin: boolean
+  logout: () => void
+  isLoadingLogout: boolean
+  isLoggedIn: boolean
+  isLoading: boolean
+}
+
 export const useAuth = () => {
   const [localStorageSession, setLocalStorageSession] = useLocalStorage(
     "session",

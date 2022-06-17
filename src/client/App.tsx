@@ -11,7 +11,7 @@ import { UserPage } from "./pages/UserPage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import theme from "./theme"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { useAuth } from "./hooks/useAuth"
+import { UseAuthContextWrapper, useAuthContext } from "./context/UseAuthContext"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,54 +26,57 @@ export const App = () => {
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <QueryClientProvider client={queryClient}>
-        <div className="App">
-          <Navbar />
-          <main className="Main">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <PreAuthorizeRoute>
-                    <PreHomePage />
-                  </PreAuthorizeRoute>
-                }
-              />
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/@:username"
-                element={
-                  <ProtectedRoute>
-                    <UserPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <PreAuthorizeRoute>
-                    <LoginPage />
-                  </PreAuthorizeRoute>
-                }
-              />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <UseAuthContextWrapper>
+          <div className="App">
+            <Navbar />
+            <main className="Main">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <PreAuthorizeRoute>
+                      <PreHomePage />
+                    </PreAuthorizeRoute>
+                  }
+                />
+                <Route
+                  path="/home"
+                  element={
+                    <ProtectedRoute>
+                      <HomePage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/@:username"
+                  element={
+                    <ProtectedRoute>
+                      <UserPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <PreAuthorizeRoute>
+                      <LoginPage />
+                    </PreAuthorizeRoute>
+                  }
+                />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </UseAuthContextWrapper>
       </QueryClientProvider>
     </ChakraProvider>
   )
 }
 
 const PreAuthorizeRoute = ({ children }: { children: JSX.Element }) => {
-  const { isLoggedIn, isLoading } = useAuth()
+  const { useGlobalAuth } = useAuthContext()
+  const { isLoggedIn, isLoading } = useGlobalAuth
 
   if (isLoading) return <BasicPage />
 
@@ -83,7 +86,8 @@ const PreAuthorizeRoute = ({ children }: { children: JSX.Element }) => {
 }
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { isLoggedIn, isLoading } = useAuth()
+  const { useGlobalAuth } = useAuthContext()
+  const { isLoggedIn, isLoading } = useGlobalAuth
 
   if (isLoading) return <BasicPage />
 

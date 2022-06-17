@@ -11,10 +11,11 @@ import {
   Stack,
   VStack,
 } from "@chakra-ui/react"
-import { useAuth } from "../hooks/useAuth"
+import { useAuthContext } from "../context/UseAuthContext"
 
 export const LoginPage = () => {
-  const { login, isLoadingLogin } = useAuth()
+  const { useGlobalAuth } = useAuthContext()
+  const { login, isLoadingLogin } = useGlobalAuth
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")

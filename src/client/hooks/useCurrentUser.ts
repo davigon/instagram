@@ -1,11 +1,12 @@
 import { useQuery, UseQueryResult } from "react-query"
 import { CurrentUser } from "../../../types/types"
-import { useAuth } from "./useAuth"
+import { useAuthContext } from "../context/UseAuthContext"
 import { useLocalStorage } from "./useLocalStorage"
 
 export const useCurrentUser = () => {
   const [session] = useLocalStorage("session", "")
-  const {isLoggedIn, isLoading} = useAuth()
+  const { useGlobalAuth } = useAuthContext()
+  const { isLoggedIn, isLoading } = useGlobalAuth
 
   const currentUserFetch = async () => {
     const response = await fetch(`/api/user/currentUser`, {
