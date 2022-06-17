@@ -20,6 +20,7 @@ import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
 import { NavLink, Link as RouterLink } from "react-router-dom"
 import { useCurrentUser } from "../hooks/useCurrentUser"
 import { useGlobalAuth } from "../context/useGlobalAuth"
+import { SearchInput } from "./search/SearchInput"
 
 export const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,14 +47,10 @@ export const Navbar = () => {
         />
         <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
           <Box fontWeight={"semibold"}>Instagram</Box>
-          <NavigationLink
-            key={"/"}
-            name={"Inicio"}
-            to={"/"}
-          />
+          <NavigationLink key={"/"} name={"Inicio"} to={"/"} />
         </HStack>
-
-        <HStack spacing={4}>
+        <HStack spacing={4} pl={4}>
+          {isLoggedIn ? <SearchInput /> : null}
           <Button
             colorScheme={"whiteAlpha"}
             bg={useColorModeValue("white", "gray.800")}

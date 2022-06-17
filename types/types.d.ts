@@ -23,3 +23,11 @@ export interface User {
   hdProfilePicUrl: string
   currentUserAllowedToView: boolean
 }
+
+export interface SearchedUser {
+  username: string
+  name: string
+  profilePicUrl: string
+  isPrivate: boolean
+  following: boolean
+}
