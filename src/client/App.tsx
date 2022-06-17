@@ -77,7 +77,7 @@ const PreAuthorizeRoute = ({ children }: { children: JSX.Element }) => {
 
   if (isLoading) return <BasicPage />
 
-  if (isLoggedIn) return <Navigate to="/inicio" replace />
+  if (isLoggedIn) return <Navigate to="/home" replace />
 
   return children
 }
