@@ -47,9 +47,9 @@ export const Navbar = () => {
         <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
           <Box fontWeight={"semibold"}>Instagram</Box>
           <NavigationLink
-            key={"home"}
+            key={"/"}
             name={"Inicio"}
-            to={isLoggedIn ? "/home" : "/"}
+            to={"/"}
           />
         </HStack>
 

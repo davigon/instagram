@@ -59,7 +59,7 @@ export const useAuth = () => {
         setLocalStorageSession(data.session)
         setIsLoading(true)
         setIsLoggedIn(true)
-        navigate("/home")
+        navigate("/")
         toast({
           title: "Inicio de sesión correcto.",
           status: "success",

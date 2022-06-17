@@ -31,22 +31,7 @@ export const App = () => {
             <Navbar />
             <main className="Main">
               <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <PreAuthorizeRoute>
-                      <PreHomePage />
-                    </PreAuthorizeRoute>
-                  }
-                />
-                <Route
-                  path="/home"
-                  element={
-                    <ProtectedRoute>
-                      <HomePage />
-                    </ProtectedRoute>
-                  }
-                />
+                <Route path="/" element={<HomeRoute />} />
                 <Route
                   path="/@:username"
                   element={
@@ -74,12 +59,22 @@ export const App = () => {
   )
 }
 
+const HomeRoute = () => {
+  const { isLoggedIn, isLoading } = useGlobalAuth()
+
+  if (isLoading) return <BasicPage />
+
+  if (!isLoggedIn) return <PreHomePage />
+
+  return <HomePage />
+}
+
 const PreAuthorizeRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoggedIn, isLoading } = useGlobalAuth()
 
   if (isLoading) return <BasicPage />
 
-  if (isLoggedIn) return <Navigate to="/home" replace />
+  if (isLoggedIn) return <Navigate to="/" replace />
 
   return children
 }
