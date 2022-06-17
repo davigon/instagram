@@ -19,13 +19,12 @@ import {
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
 import { NavLink, Link as RouterLink } from "react-router-dom"
 import { useCurrentUser } from "../hooks/useCurrentUser"
-import { useAuthContext } from "../context/UseAuthContext"
+import { useGlobalAuth } from "../context/useGlobalAuth"
 
 export const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
-  const { useGlobalAuth } = useAuthContext()
-  const { isLoggedIn, logout } = useGlobalAuth
+  const { isLoggedIn, logout } = useGlobalAuth()
   const { currentUserQuery } = useCurrentUser()
 
   return (

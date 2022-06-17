@@ -11,7 +11,7 @@ import { UserPage } from "./pages/UserPage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import theme from "./theme"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { UseAuthContextWrapper, useAuthContext } from "./context/UseAuthContext"
+import { UseGlobalAuthWrapper, useGlobalAuth } from "./context/useGlobalAuth"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,7 +26,7 @@ export const App = () => {
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <QueryClientProvider client={queryClient}>
-        <UseAuthContextWrapper>
+        <UseGlobalAuthWrapper>
           <div className="App">
             <Navbar />
             <main className="Main">
@@ -68,15 +68,14 @@ export const App = () => {
             </main>
             <Footer />
           </div>
-        </UseAuthContextWrapper>
+        </UseGlobalAuthWrapper>
       </QueryClientProvider>
     </ChakraProvider>
   )
 }
 
 const PreAuthorizeRoute = ({ children }: { children: JSX.Element }) => {
-  const { useGlobalAuth } = useAuthContext()
-  const { isLoggedIn, isLoading } = useGlobalAuth
+  const { isLoggedIn, isLoading } = useGlobalAuth()
 
   if (isLoading) return <BasicPage />
 
@@ -86,8 +85,7 @@ const PreAuthorizeRoute = ({ children }: { children: JSX.Element }) => {
 }
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { useGlobalAuth } = useAuthContext()
-  const { isLoggedIn, isLoading } = useGlobalAuth
+  const { isLoggedIn, isLoading } = useGlobalAuth()
 
   if (isLoading) return <BasicPage />
 

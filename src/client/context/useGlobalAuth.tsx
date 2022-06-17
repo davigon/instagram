@@ -1,8 +1,8 @@
 import React, { useContext } from "react"
 import { useAuth, UseAuthType } from "../hooks/useAuth"
 
-export interface UseAuthContext {
-  useGlobalAuth: UseAuthType
+export interface UseGlobalAuth {
+  hook: UseAuthType
 }
 
 const getDefaultUseAuth = () => {
@@ -17,15 +17,17 @@ const getDefaultUseAuth = () => {
 }
 
 const defaultVal = {
-  useGlobalAuth: getDefaultUseAuth(),
-} as UseAuthContext
+  hook: getDefaultUseAuth(),
+} as UseGlobalAuth
 
 const context = React.createContext(defaultVal)
 
 const { Provider } = context
 
-export const UseAuthContextWrapper = ({ children }: { children: any }) => {
-  return <Provider value={{ useGlobalAuth: useAuth() }}>{children}</Provider>
+export const UseGlobalAuthWrapper = ({ children }: { children: any }) => {
+  return <Provider value={{ hook: useAuth() }}>{children}</Provider>
 }
 
-export const useAuthContext = () => useContext(context)
+export const useGlobalAuth = () => {
+  return useContext(context).hook
+}
