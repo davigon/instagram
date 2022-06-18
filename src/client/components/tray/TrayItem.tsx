@@ -15,8 +15,19 @@ export const TrayItem = ({
   onClick: (id: string) => void
 }) => {
   const navigate = useNavigate()
-  const border = active
-    ? "0.25rem var(--chakra-colors-blue-500) solid"
+  const borderColor = active
+    ? "blue"
+    : item.title
+    ? undefined
+    : item.isHide
+    ? "gray"
+    : item.isBestie
+    ? "green"
+    : !item.isSeen
+    ? "pink"
+    : undefined
+  const border = borderColor
+    ? `0.25rem var(--chakra-colors-${borderColor}-500) solid`
     : undefined
 
   return (
@@ -36,7 +47,7 @@ export const TrayItem = ({
           item.username ? () => navigate(`/@${item.username}`) : undefined
         }
       >
-        {item.title}
+        {item.title || item.username}
       </Text>
     </VStack>
   )

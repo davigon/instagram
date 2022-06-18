@@ -34,10 +34,12 @@ export interface SearchedUser {
 
 export interface TrayItem {
   id: string
-  title: string
+  title?: string
   coverUrl: string
   username?: string
   isSeen?: boolean
   isBestie?: boolean
+  isHide?: boolean
   isBroadcast?: boolean
+  broadcastUrl?: string
 }
