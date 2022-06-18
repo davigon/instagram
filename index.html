@@ -13,6 +13,11 @@
   </head>
   <body>
     <div id="root" style="height: 100%; width: 100%"><!--root-html--></div>
+    <script>
+      if (global === undefined) {
+        var global = window
+      }
+    </script>
     <script type="module" src="/src/client/entry-client.tsx"></script>
   </body>
 </html>

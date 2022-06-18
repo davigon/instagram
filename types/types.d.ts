@@ -31,3 +31,13 @@ export interface SearchedUser {
   isPrivate: boolean
   following: boolean
 }
+
+export interface TrayItem {
+  id: string
+  title: string
+  coverUrl: string
+  username?: string
+  isSeen?: boolean
+  isBestie?: boolean
+  isBroadcast?: boolean
+}
