@@ -26,6 +26,8 @@ export const Navbar = () => {
   const { isLoggedIn, logout } = useGlobalAuth()
   const { currentUserQuery } = useCurrentUser()
 
+  const menuPr = useBreakpointValue({ base: 2, md: 0 })
+
   return (
     <Box px={4}>
       <Flex h={"4rem"} alignItems={"center"} justifyContent={"space-between"}>
@@ -63,7 +65,7 @@ export const Navbar = () => {
           />
 
           {isLoggedIn ? (
-            <Box pr={useBreakpointValue({ base: 2, md: 0 })}>
+            <Box pr={menuPr}>
               <Menu>
                 <MenuButton
                   as={Button}
