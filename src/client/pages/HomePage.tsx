@@ -1,16 +1,35 @@
 import React, { useState } from "react"
-import { VStack, Container } from "@chakra-ui/react"
+import { VStack, Container, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { Tray } from "../components/tray/Tray"
 import { TrayItem } from "../components/tray/TrayItem"
 import { BasicPage } from "./BasicPage"
 import { useStoriesTray } from "../hooks/useStoriesTray"
+import { StoriesType, useStories } from "../hooks/useStories"
+import { ContentGrid } from "../components/content/ContentGrid"
+import { StoryCard } from "../components/content/StoryCard"
 
 export const HomePage = () => {
-  const { storiesTray, isLoading } = useStoriesTray()
-
+  const [contentType, setContentType] = useState(0)
+  const [selectedTab, setSelectedTab] = useState(0)
   const [selectedItem, setSelectedItem] = useState("")
+
+  const { storiesTray, isLoading } = useStoriesTray()
+  const stories = useStories(
+    String(selectedItem),
+    contentType === 1 || false,
+    StoriesType.Highlights
+  )
+
   const handleClickTrayItem = (id: string) => {
+    setContentType(1)
     setSelectedItem(id)
+    setSelectedTab(-1)
+  }
+
+  const handleChangeTab = (index: number) => {
+    setContentType(index)
+    setSelectedTab(index)
+    setSelectedItem("")
   }
 
   return (
@@ -18,19 +37,50 @@ export const HomePage = () => {
       <VStack py={6} spacing={8}>
         <Container maxW="container.md">
           <Tray isLoading={isLoading}>
-            {storiesTray &&
-              storiesTray.map((i) => {
-                return (
-                  <TrayItem
-                    key={i.id}
-                    itemId={i.id}
-                    item={i}
-                    onClick={handleClickTrayItem}
-                    active={selectedItem === i.id}
-                  />
-                )
-              })}
+            {storiesTray?.map((i) => {
+              return (
+                <TrayItem
+                  key={i.id}
+                  itemId={i.id}
+                  item={i}
+                  onClick={handleClickTrayItem}
+                  active={selectedItem === i.id}
+                />
+              )
+            })}
           </Tray>
+        </Container>
+        <Container maxW="container.lg">
+          <Tabs
+            isFitted
+            variant="enclosed"
+            index={selectedTab}
+            onChange={handleChangeTab}
+          >
+            <TabList mb="1em">
+              <Tab>Publicaciones</Tab>
+            </TabList>
+            <TabPanels display={contentType === 1 ? "none" : undefined}>
+              <TabPanel>
+                <p>Publicaciones</p>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Container>
+        <Container
+          maxW="container.lg"
+          display={contentType !== 1 ? "none" : undefined}
+        >
+          <ContentGrid
+            contentLength={stories.stories?.length || 0}
+            hasMoreContent={false}
+            loadMoreContent={() => {}}
+            isLoadingContent={stories.isLoading}
+          >
+            {stories.stories?.map((i) => {
+              return <StoryCard key={i.id} story={i} />
+            })}
+          </ContentGrid>
         </Container>
       </VStack>
     </BasicPage>
