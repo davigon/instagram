@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { SessionManager } from "../utils/SessionManager"
-import { TrayItem } from "../../../types/types"
+import { TrayItem, Story, MediaType } from "../../../types/types"
 
 export class StoriesController {
   public static highlightsTray = async (req: Request, res: Response) => {
@@ -57,6 +57,59 @@ export class StoriesController {
       })
       res.send(broadcastsTrayItems.concat(storiesTrayItems))
     } catch (e) {
+      res.sendStatus(400)
+    }
+  }
+
+  public static stories = async (req: Request, res: Response) => {
+    try {
+      const client = await SessionManager.deserializeSession(
+        String(req.headers.session)
+      )
+      let id: string | number = ""
+      if (req.query.username) {
+        id = await client.user.getIdByUsername(String(req.query.username))
+      }
+      if (req.query.id) {
+        id = String(req.query.id)
+      }
+      const storiesResponse = await client.feed
+        .reelsMedia({ userIds: [id] })
+        .items()
+      const stories: Story[] = storiesResponse.map((i) => {
+        // @ts-ignore
+        const song = i.story_music_stickers
+          ? // @ts-ignore
+            i.story_music_stickers[0].music_asset_info
+          : undefined
+        return {
+          id: i.id,
+          username: i.user.username || "",
+          media: {
+            type: i.media_type === 1 ? MediaType.Image : MediaType.Video,
+            id: i.id,
+            mediaUrl:
+              i.media_type === 1
+                ? i.image_versions2.candidates[0].url
+                : i.video_versions[0].url,
+            previewUrl:
+              i.media_type === 2
+                ? i.image_versions2.candidates[0].url
+                : undefined,
+          },
+          song: song
+            ? {
+                title: song.title,
+                artist: song.display_artist,
+                songUrl: song.progressive_download_url,
+              }
+            : undefined,
+          takenAt: i.taken_at,
+        }
+      })
+      res.send(stories)
+    } catch (e) {
+      console.log(e)
       res.sendStatus(400)
     }
   }

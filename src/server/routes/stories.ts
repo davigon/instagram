@@ -7,4 +7,6 @@ router.get("/highlightsTray", StoriesController.highlightsTray)
 
 router.get("/storiesTray", StoriesController.storiesTray)
 
+router.get("/stories", StoriesController.stories)
+
 export default router

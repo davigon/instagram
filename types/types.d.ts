@@ -43,3 +43,36 @@ export interface TrayItem {
   isBroadcast?: boolean
   broadcastUrl?: string
 }
+
+export const enum ContentType {
+  Post,
+  Story,
+  HighlightStory,
+  Broadcast,
+}
+
+export const enum MediaType {
+  Image,
+  Video,
+}
+
+export interface Media {
+  type: MediaType
+  id: string
+  mediaUrl: string
+  previewUrl?: string
+}
+
+export interface Song {
+  title: string
+  artist: string
+  songUrl: string
+}
+
+export interface Story {
+  id: string
+  username: string
+  media: Media
+  song?: Song
+  takenAt: number
+}
