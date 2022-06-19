@@ -11,6 +11,7 @@ export const useUser = (username: string) => {
       headers: { "Content-Type": "application/json", session },
       credentials: "include",
     })
+    if (response.status >= 300) throw Error("Usuario no encontrado.")
     return response.json()
   }
 
