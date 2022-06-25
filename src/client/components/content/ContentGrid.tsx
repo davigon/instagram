@@ -23,7 +23,7 @@ export const ContentGrid = ({
     )
   }
 
-  if (children === undefined) {
+  if (children === undefined || contentLength === 0) {
     return (
       <Center>
         <Text>Nada, por el momento.</Text>
