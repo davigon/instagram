@@ -76,3 +76,11 @@ export interface Story {
   song?: Song
   takenAt: number
 }
+
+export interface Post {
+  id: string
+  username: string
+  medias: Media[]
+  caption: string
+  likes: number
+}
