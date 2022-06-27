@@ -83,4 +83,10 @@ export interface Post {
   medias: Media[]
   caption: string
   likes: number
+  takenAt: number
+}
+
+export interface PostsResponse {
+  posts: Post[]
+  next?: string
 }
