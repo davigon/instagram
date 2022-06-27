@@ -1,5 +1,13 @@
 import React from "react"
-import { Box, VStack, Text, Avatar, Badge, LightMode } from "@chakra-ui/react"
+import {
+  Box,
+  VStack,
+  Text,
+  Avatar,
+  Badge,
+  LightMode,
+  AvatarBadge,
+} from "@chakra-ui/react"
 import { TrayItem as TrayItemType } from "../../../../types/types"
 import { useNavigate } from "react-router-dom"
 
@@ -15,7 +23,7 @@ export const TrayItem = ({
   onClick: (item: TrayItemType) => void
 }) => {
   const navigate = useNavigate()
-  const borderColor = active
+  const badgeColor = active
     ? "blue"
     : item.title
     ? undefined
@@ -26,9 +34,6 @@ export const TrayItem = ({
     : !item.isSeen
     ? "pink"
     : undefined
-  const border = borderColor
-    ? `0.25rem var(--chakra-colors-${borderColor}-500) solid`
-    : undefined
 
   return (
     <VStack textAlign={"center"} alignContent={"center"} px={4}>
@@ -38,8 +43,15 @@ export const TrayItem = ({
           src={`/api/cors/${item.coverUrl}`}
           cursor={"pointer"}
           onClick={() => onClick(item)}
-          border={border}
-        />
+        >
+          {badgeColor && !item.broadcast ? (
+            <AvatarBadge
+              bg={`${badgeColor}.500`}
+              borderColor={"whiteAlpha.500"}
+              boxSize="0.75em"
+            />
+          ) : null}
+        </Avatar>
         {item.broadcast ? (
           <Box
             position="absolute"
