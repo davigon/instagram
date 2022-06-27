@@ -10,51 +10,54 @@ export class PostsController {
       )
       const homePostsResponse = client.feed.timeline()
       if (req.query.next) homePostsResponse.deserialize(String(req.query.next))
-      const homePosts: Post[] = (await homePostsResponse.items()).map((i) => {
-        return {
-          id: i.id,
-          username: i.user.username,
-          medias:
-            i.media_type === 1 || i.media_type === 2
-              ? [
-                  {
-                    type:
-                      i.media_type === 1 ? MediaType.Image : MediaType.Video,
-                    id: i.id,
-                    mediaUrl:
-                      i.media_type === 1
-                        ? i.image_versions2?.candidates[0].url
-                        : i.video_versions && i.video_versions[0].url,
-                    previewUrl:
-                      i.media_type === 2
-                        ? i.image_versions2?.candidates[0].url
-                        : undefined,
-                  },
-                ]
-              : i.carousel_media
-              ? i.carousel_media.map((m) => {
-                  return {
-                    type:
-                      m.media_type === 1 ? MediaType.Image : MediaType.Video,
-                    id: m.id,
-                    mediaUrl:
-                      m.media_type === 1
-                        ? m.image_versions2?.candidates[0].url
-                        : // @ts-ignore
-                          m.video_versions && m.video_versions[0].url,
-                    previewUrl:
-                      m.media_type === 2
-                        ? m.image_versions2?.candidates[0].url
-                        : undefined,
-                  }
-                })
-              : [],
-          caption: i.caption?.text || "",
-          likes: i.like_count,
-        }
-      })
+      const homePosts: Post[] = (await homePostsResponse.items())
+        .filter((i) => i.user.friendship_status?.following)
+        .map((i) => {
+          return {
+            id: i.ad_id || i.id,
+            username: i.user.username,
+            medias:
+              i.media_type === 1 || i.media_type === 2
+                ? [
+                    {
+                      type:
+                        i.media_type === 1 ? MediaType.Image : MediaType.Video,
+                      id: i.id,
+                      mediaUrl:
+                        i.media_type === 1
+                          ? i.image_versions2?.candidates[0].url
+                          : i.video_versions && i.video_versions[0].url,
+                      previewUrl:
+                        i.media_type === 2
+                          ? i.image_versions2?.candidates[0].url
+                          : undefined,
+                    },
+                  ]
+                : i.carousel_media
+                ? i.carousel_media.map((m) => {
+                    return {
+                      type:
+                        m.media_type === 1 ? MediaType.Image : MediaType.Video,
+                      id: m.id,
+                      mediaUrl:
+                        m.media_type === 1
+                          ? m.image_versions2?.candidates[0].url
+                          : // @ts-ignore
+                            m.video_versions && m.video_versions[0].url,
+                      previewUrl:
+                        m.media_type === 2
+                          ? m.image_versions2?.candidates[0].url
+                          : undefined,
+                    }
+                  })
+                : [],
+            caption: i.caption?.text || "",
+            likes: i.like_count,
+            takenAt: i.taken_at,
+          }
+        })
       res.send({
-        homePosts,
+        posts: homePosts,
         next: homePostsResponse.isMoreAvailable()
           ? homePostsResponse.serialize()
           : undefined,
@@ -115,10 +118,11 @@ export class PostsController {
               : [],
           caption: i.caption?.text || "",
           likes: i.like_count,
+          takenAt: i.taken_at,
         }
       })
       res.send({
-        userPosts,
+        posts: userPosts,
         next: userPostsResponse.isMoreAvailable()
           ? userPostsResponse.serialize()
           : undefined,
