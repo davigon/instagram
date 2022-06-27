@@ -27,6 +27,7 @@ import { StoryCard } from "../components/content/StoryCard"
 import { ErrorPage } from "./ErrorPage"
 import { LoadingPage } from "./LoadingPage"
 import { useUserPosts } from "../hooks/useUserPosts"
+import { TrayItem as TrayItemType } from "../../../types/types"
 
 export const UserPage = () => {
   const [contentType, setContentType] = useState(0)
@@ -60,9 +61,9 @@ export const UserPage = () => {
     setSelectedItem("")
   }, [username])
 
-  const handleClickTrayItem = (id: string) => {
+  const handleClickTrayItem = (item: TrayItemType) => {
     setContentType(2)
-    setSelectedItem(id)
+    setSelectedItem(item.id)
     setSelectedTab(-1)
   }
 
