@@ -41,8 +41,11 @@ export class StoriesController {
             id: i.id,
             coverUrl: i.broadcast_owner.profile_pic_url,
             username: i.broadcast_owner.username,
-            isBroadcast: true,
-            broadcastUrl: i.dash_playback_url,
+            broadcast: {
+              url: i.dash_playback_url,
+              frameUrl: i.cover_frame_url,
+              views: i.viewer_count,
+            },
           }
         })
       const storiesTrayItems: TrayItem[] = storiesTrayResponse.tray.map((i) => {

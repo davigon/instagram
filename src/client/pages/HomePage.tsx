@@ -7,6 +7,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Center,
 } from "@chakra-ui/react"
 import { Tray } from "../components/tray/Tray"
 import { TrayItem } from "../components/tray/TrayItem"
@@ -17,6 +18,8 @@ import { ContentGrid } from "../components/content/ContentGrid"
 import { StoryCard } from "../components/content/StoryCard"
 import { useHomePosts } from "../hooks/useHomePosts"
 import { PostCard } from "../components/content/PostCard"
+import { TrayItem as TrayItemType } from "../../../types/types"
+import { BroadcastCard } from "../components/content/BroadcastCard"
 
 export const HomePage = () => {
   const [contentType, setContentType] = useState(0)
@@ -31,9 +34,11 @@ export const HomePage = () => {
   )
   const posts = useHomePosts()
 
-  const handleClickTrayItem = (id: string) => {
-    setContentType(1)
-    setSelectedItem(id)
+  const handleClickTrayItem = (item: TrayItemType) => {
+    if (item.broadcast) setContentType(3)
+    else setContentType(1)
+
+    setSelectedItem(item.id)
     setSelectedTab(-1)
   }
 
@@ -102,6 +107,15 @@ export const HomePage = () => {
             })}
           </ContentGrid>
         </Container>
+        {contentType === 3 ? (
+          <Container maxW="container.md">
+            <Center>
+              <BroadcastCard
+                trayItem={storiesTray?.find((i) => i.id === selectedItem)}
+              />
+            </Center>
+          </Container>
+        ) : null}
       </VStack>
     </BasicPage>
   )

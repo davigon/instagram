@@ -32,6 +32,12 @@ export interface SearchedUser {
   following: boolean
 }
 
+export interface Broadcast {
+  url: string
+  frameUrl: string
+  views: number
+}
+
 export interface TrayItem {
   id: string
   title?: string
@@ -40,8 +46,7 @@ export interface TrayItem {
   isSeen?: boolean
   isBestie?: boolean
   isHide?: boolean
-  isBroadcast?: boolean
-  broadcastUrl?: string
+  broadcast?: Broadcast
 }
 
 export const enum ContentType {

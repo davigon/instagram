@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, VStack, Text, Avatar } from "@chakra-ui/react"
+import { Box, VStack, Text, Avatar, Badge, LightMode } from "@chakra-ui/react"
 import { TrayItem as TrayItemType } from "../../../../types/types"
 import { useNavigate } from "react-router-dom"
 
@@ -12,7 +12,7 @@ export const TrayItem = ({
   item: TrayItemType
   itemId: string
   active: boolean
-  onClick: (id: string) => void
+  onClick: (item: TrayItemType) => void
 }) => {
   const navigate = useNavigate()
   const borderColor = active
@@ -32,14 +32,33 @@ export const TrayItem = ({
 
   return (
     <VStack textAlign={"center"} alignContent={"center"} px={4}>
-      <Box textAlign="center">
+      <Box position={"relative"} textAlign="center">
         <Avatar
           size={"lg"}
           src={`/api/cors/${item.coverUrl}`}
           cursor={"pointer"}
-          onClick={() => onClick(item.id)}
+          onClick={() => onClick(item)}
           border={border}
         />
+        {item.broadcast ? (
+          <Box
+            position="absolute"
+            top="90%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+          >
+            <LightMode>
+              <Badge
+                px="2"
+                colorScheme="pink"
+                variant="solid"
+                fontSize="0.6rem"
+              >
+                DIRECTO
+              </Badge>
+            </LightMode>
+          </Box>
+        ) : null}
       </Box>
       <Text
         cursor={item.username ? "pointer" : undefined}
