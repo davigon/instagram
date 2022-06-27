@@ -33,7 +33,7 @@ export const StoryCard = ({ story }: { story: Story }) => {
           </Text>
         </Box>
       ) : null}
-      <MediaComponent media={story.media} />
+      <MediaComponent medias={[story.media]} />
       <Flex px={6} alignItems={"center"}>
         <Text>{new Date(story.takenAt * 1000).toLocaleString()}</Text>
         <Spacer />

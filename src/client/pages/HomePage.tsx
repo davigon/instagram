@@ -1,5 +1,13 @@
 import React, { useState } from "react"
-import { VStack, Container, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
+import {
+  VStack,
+  Container,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react"
 import { Tray } from "../components/tray/Tray"
 import { TrayItem } from "../components/tray/TrayItem"
 import { BasicPage } from "./BasicPage"
@@ -7,6 +15,8 @@ import { useStoriesTray } from "../hooks/useStoriesTray"
 import { StoriesType, useStories } from "../hooks/useStories"
 import { ContentGrid } from "../components/content/ContentGrid"
 import { StoryCard } from "../components/content/StoryCard"
+import { useHomePosts } from "../hooks/useHomePosts"
+import { PostCard } from "../components/content/PostCard"
 
 export const HomePage = () => {
   const [contentType, setContentType] = useState(0)
@@ -19,6 +29,7 @@ export const HomePage = () => {
     contentType === 1 || false,
     StoriesType.Highlights
   )
+  const posts = useHomePosts()
 
   const handleClickTrayItem = (id: string) => {
     setContentType(1)
@@ -62,7 +73,16 @@ export const HomePage = () => {
             </TabList>
             <TabPanels display={contentType === 1 ? "none" : undefined}>
               <TabPanel>
-                <p>Publicaciones</p>
+                <ContentGrid
+                  contentLength={posts.homePosts?.length || 0}
+                  hasMoreContent={posts.hasMorePosts}
+                  loadMoreContent={posts.loadMorePosts}
+                  isLoadingContent={posts.isLoading}
+                >
+                  {posts.homePosts?.map((i) => {
+                    return <PostCard key={i.id} post={i} />
+                  })}
+                </ContentGrid>
               </TabPanel>
             </TabPanels>
           </Tabs>

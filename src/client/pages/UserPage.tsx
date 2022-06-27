@@ -22,9 +22,11 @@ import { useHighlightsTray } from "../hooks/useHighlightsTray"
 import { TrayItem } from "../components/tray/TrayItem"
 import { StoriesType, useStories } from "../hooks/useStories"
 import { ContentGrid } from "../components/content/ContentGrid"
+import { PostCard } from "../components/content/PostCard"
 import { StoryCard } from "../components/content/StoryCard"
 import { ErrorPage } from "./ErrorPage"
 import { LoadingPage } from "./LoadingPage"
+import { useUserPosts } from "../hooks/useUserPosts"
 
 export const UserPage = () => {
   const [contentType, setContentType] = useState(0)
@@ -46,6 +48,10 @@ export const UserPage = () => {
     selectedItem,
     (userQuery.data?.currentUserAllowedToView && contentType === 2) || false,
     StoriesType.Highlights
+  )
+  const posts = useUserPosts(
+    String(username),
+    (userQuery.data?.currentUserAllowedToView && contentType === 0) || false
   )
 
   useEffect(() => {
@@ -107,7 +113,16 @@ export const UserPage = () => {
                 </TabList>
                 <TabPanels display={contentType === 2 ? "none" : undefined}>
                   <TabPanel>
-                    <p>Publicaciones</p>
+                    <ContentGrid
+                      contentLength={posts.userPosts?.length || 0}
+                      hasMoreContent={posts.hasMorePosts}
+                      loadMoreContent={posts.loadMorePosts}
+                      isLoadingContent={posts.isLoading}
+                    >
+                      {posts.userPosts?.map((i) => {
+                        return <PostCard key={i.id} post={i} />
+                      })}
+                    </ContentGrid>
                   </TabPanel>
                   <TabPanel>
                     <ContentGrid
