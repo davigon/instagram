@@ -12,12 +12,14 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import { useGlobalAuth } from "../context/useGlobalAuth"
+import { TwoFactorLoginRequest } from "../hooks/useAuth"
 
 export const LoginPage = () => {
-  const { login, isLoadingLogin } = useGlobalAuth()
+  const { login, twoFactorData, isLoadingLogin } = useGlobalAuth()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [code, setCode] = useState("")
 
   const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
     setUsername(e.currentTarget.value)
@@ -27,14 +29,25 @@ export const LoginPage = () => {
     setPassword(e.currentTarget.value)
   }
 
+  const handleChangeCode = (e: ChangeEvent<HTMLInputElement>) => {
+    setCode(e.currentTarget.value)
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    login(username, password)
+    const twoFactor: TwoFactorLoginRequest | undefined = twoFactorData
+      ? {
+          code,
+          identifier: twoFactorData.identifier,
+          type: twoFactorData.type,
+        }
+      : undefined
+    login({ username, password, twoFactor })
   }
 
   return (
     <Box bg={useColorModeValue("gray.50", "gray.900")}>
-      <Flex h={"calc(100vh - 8rem)"} align={"center"} justify={"center"}>
+      <Flex minH={"calc(100vh - 8rem)"} align={"center"} justify={"center"}>
         <Stack spacing={8} mx={"auto"} maxW={"xxl"} py={12} px={6}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
             Inicio de sesión
@@ -54,6 +67,7 @@ export const LoginPage = () => {
                       type="text"
                       value={username}
                       onChange={handleChangeUsername}
+                      disabled={twoFactorData !== undefined}
                     />
                   </FormControl>
                 </Box>
@@ -64,6 +78,19 @@ export const LoginPage = () => {
                       type="password"
                       value={password}
                       onChange={handleChangePassword}
+                      disabled={twoFactorData !== undefined}
+                    />
+                  </FormControl>
+                </Box>
+                <Box display={twoFactorData ? "block" : "none"}>
+                  <FormControl id="code">
+                    <FormLabel>
+                      Código {twoFactorData?.type === 0 ? "TOTP" : "SMS"}
+                    </FormLabel>
+                    <Input
+                      type="text"
+                      value={code}
+                      onChange={handleChangeCode}
                     />
                   </FormControl>
                 </Box>

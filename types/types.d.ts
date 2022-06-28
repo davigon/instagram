@@ -3,8 +3,19 @@ declare module "*.jpg"
 declare module "*.png"
 declare module "*.svg"
 
+export const enum TwoFactorLoginType {
+  TOTP,
+  SMS,
+}
+
+export interface TwoFactorLoginResponse {
+  type: TwoFactorLoginType
+  identifier: string
+}
+
 export interface LoginResponse {
   session: string
+  twoFactor?: TwoFactorLoginResponse
 }
 
 export interface CurrentUser {

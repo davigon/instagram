@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { useAuth, UseAuthType } from "../hooks/useAuth"
+import { LoginRequest, useAuth, UseAuthType } from "../hooks/useAuth"
 
 export interface UseGlobalAuth {
   hook: UseAuthType
@@ -7,7 +7,8 @@ export interface UseGlobalAuth {
 
 const getDefaultUseAuth = () => {
   return {
-    login: (username: string, password: string) => {},
+    login: (loginRequest: LoginRequest) => {},
+    twoFactorData: undefined,
     isLoadingLogin: false,
     logout: () => {},
     isLoadingLogout: false,

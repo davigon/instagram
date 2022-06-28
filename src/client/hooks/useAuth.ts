@@ -2,16 +2,28 @@ import { useToast } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useMutation, UseMutationResult } from "react-query"
 import { useNavigate } from "react-router-dom"
-import { LoginResponse } from "../../../types/types"
+import {
+  LoginResponse,
+  TwoFactorLoginResponse,
+  TwoFactorLoginType,
+} from "../../../types/types"
 import { useLocalStorage } from "./useLocalStorage"
 
-type LoginRequest = {
+export type TwoFactorLoginRequest = {
+  code: string
+  identifier: string
+  type: TwoFactorLoginType
+}
+
+export type LoginRequest = {
   username: string
   password: string
+  twoFactor?: TwoFactorLoginRequest
 }
 
 export type UseAuthType = {
-  login: (username: string, password: string) => void
+  login: (loginRequest: LoginRequest) => void
+  twoFactorData?: TwoFactorLoginResponse
   isLoadingLogin: boolean
   logout: () => void
   isLoadingLogout: boolean
@@ -44,10 +56,7 @@ export const useAuth = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({
-        username: loginRequest.username,
-        password: loginRequest.password,
-      }),
+      body: JSON.stringify(loginRequest),
     })
     if (response.status >= 300) throw Error("Usuario o contraseña incorrectos.")
     return response.json()
@@ -56,6 +65,8 @@ export const useAuth = () => {
   const loginQuery: UseMutationResult<LoginResponse, Error, LoginRequest> =
     useMutation(["login"], loginFetch, {
       onSuccess: (data: LoginResponse) => {
+        if (data.twoFactor) return
+
         setLocalStorageSession(data.session)
         setIsLoading(true)
         setIsLoggedIn(true)
@@ -78,11 +89,7 @@ export const useAuth = () => {
       },
     })
 
-  const login = (username: string, password: string) => {
-    const loginRequest: LoginRequest = {
-      username,
-      password,
-    }
+  const login = (loginRequest: LoginRequest) => {
     loginQuery.mutate(loginRequest)
   }
 
@@ -130,6 +137,7 @@ export const useAuth = () => {
 
   return {
     login,
+    twoFactorData: loginQuery.data?.twoFactor,
     isLoadingLogin: loginQuery.isLoading,
     logout,
     isLoadingLogout: logoutQuery.isLoading,
