@@ -5,8 +5,10 @@
     "@chakra-ui/icons": "2.0.1",
     "@chakra-ui/react": "2.1.2",
     "@choc-ui/chakra-autocomplete": "4.22.0",
-    "@emotion/react": "11.9.0",
-    "@emotion/styled": "11.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "eslint-plugin-n": "15.7.0",
+    "eslint-plugin-react": "7.25.3",
     "framer-motion": "6.3.10",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -17,14 +19,15 @@
     "react-responsive-carousel": "3.2.23",
     "react-router-dom": "6.3.0",
     "use-mobile-detect-hook": "1.0.5",
-    "video.js": "7.19.2"
+    "video.js": "7.19.2",
+    "vite": "2.9.16"
   },
   "devDependencies": {
     "@types/react": "18.0.10",
     "@types/react-dom": "18.0.5",
     "@types/react-router-dom": "5.3.3",
     "@types/video.js": "7.3.42",
-    "postcss": "8.4.14",
-    "autoprefixer": "10.4.7"
+    "autoprefixer": "10.4.7",
+    "postcss": "8.4.14"
   }
 }
