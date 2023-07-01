@@ -18,9 +18,12 @@ export class AuthController {
   ) => {
     try {
       const client = new IgApiClient()
+      console.log("app version: " + client.state.constants.APP_VERSION)
+
       const { username, password, twoFactor } = req.body
       client.state.generateDevice(username)
 
+      await client.simulate.preLoginFlow()
       if (!twoFactor) await client.account.login(username, password)
       else
         await client.account.twoFactorLogin({
