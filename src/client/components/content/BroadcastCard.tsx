@@ -26,25 +26,28 @@ export const BroadcastCard = ({ trayItem }: { trayItem?: TrayItem }) => {
       pb={6}
       spacing={3}
       alignItems={"start"}
-      width={"fit-content"}
-      height={"fit-content"}
+      width={"100%"}
+      height={"100%"}
     >
-      <VideoJsPlayer
-        id={trayItem.id}
-        options={{
-          autoplay: "play",
-          controls: true,
-          sources: [
-            {
-              src: `/api/cors/${trayItem.broadcast?.url}` || "",
+      <Box width={"100%"}>
+        <VideoJsPlayer
+          id={trayItem.id}
+          options={{
+            autoplay: "play",
+            controls: true,
+            sources: [
+              {
+                src: `/api/cors/${trayItem.broadcast?.url}` || "",
+              },
+            ],
+            html5: {
+              nativeAudioTracks: false,
+              nativeVideoTracks: false,
             },
-          ],
-          html5: {
-            nativeAudioTracks: false,
-            nativeVideoTracks: false,
-          },
-        }}
-      />
+            fluid: true,
+          }}
+        />
+      </Box>
       <Box pt={6} px={6}>
         <VStack>
           <Text fontWeight="semibold">
