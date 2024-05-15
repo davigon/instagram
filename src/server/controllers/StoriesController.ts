@@ -6,22 +6,22 @@ export class StoriesController {
   public static highlightsTray = async (req: Request, res: Response) => {
     try {
       const client = await SessionManager.deserializeSession(
-        String(req.headers.session)
+        String(req.headers.session),
       )
       const userId = await client.user.getIdByUsername(
-        String(req.query.username)
+        String(req.query.username),
       )
-      const highlightsTrayResponse = await client.highlights.highlightsTray(
-        userId
-      )
+      const highlightsTrayResponse =
+        await client.highlights.highlightsTray(userId)
       const highlightsTrayItems: TrayItem[] = highlightsTrayResponse.tray.map(
-        (i) => {
+        (i: any) => {
           return {
             id: i.id,
             title: i.title,
             coverUrl: i.cover_media.cropped_image_version.url,
+            fullCoverUrl: i.cover_media.full_image_version?.url,
           }
-        }
+        },
       )
       res.send(highlightsTrayItems)
     } catch (e) {
@@ -32,7 +32,7 @@ export class StoriesController {
   public static storiesTray = async (req: Request, res: Response) => {
     try {
       const client = await SessionManager.deserializeSession(
-        String(req.headers.session)
+        String(req.headers.session),
       )
       const storiesTrayResponse = await client.feed.reelsTray().request()
       const broadcastsTrayItems: TrayItem[] =
@@ -67,7 +67,7 @@ export class StoriesController {
   public static stories = async (req: Request, res: Response) => {
     try {
       const client = await SessionManager.deserializeSession(
-        String(req.headers.session)
+        String(req.headers.session),
       )
       let id: string | number = ""
       if (req.query.username) {

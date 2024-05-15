@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "dependencies": {
     "cors-anywhere": "0.4.4",
-    "instagram-private-api": "github:davigon/instagram-private-api#master"
+    "instagram-private-api": "1.46.1"
   }
 }

@@ -53,6 +53,7 @@ export interface TrayItem {
   id: string
   title?: string
   coverUrl: string
+  fullCoverUrl?: string
   username?: string
   isSeen?: boolean
   isBestie?: boolean
