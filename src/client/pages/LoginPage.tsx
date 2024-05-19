@@ -5,6 +5,8 @@ import {
   FormLabel,
   Button,
   Input,
+  PinInput,
+  PinInputField,
   useColorModeValue,
   Flex,
   Heading,
@@ -29,8 +31,8 @@ export const LoginPage = () => {
     setPassword(e.currentTarget.value)
   }
 
-  const handleChangeCode = (e: ChangeEvent<HTMLInputElement>) => {
-    setCode(e.currentTarget.value)
+  const handleChangeCode = (code: string) => {
+    setCode(code)
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -87,11 +89,14 @@ export const LoginPage = () => {
                     <FormLabel>
                       Código {twoFactorData?.type === 0 ? "TOTP" : "SMS"}
                     </FormLabel>
-                    <Input
-                      type="text"
-                      value={code}
-                      onChange={handleChangeCode}
-                    />
+                    <PinInput otp value={code} onChange={handleChangeCode}>
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                    </PinInput>
                   </FormControl>
                 </Box>
                 <Button
