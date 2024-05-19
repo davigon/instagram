@@ -1,8 +1,19 @@
 import React from "react"
-import { Badge, Box, IconButton, Image, LightMode } from "@chakra-ui/react"
+import {
+  Container,
+  Badge,
+  Box,
+  IconButton,
+  Image,
+  LightMode,
+} from "@chakra-ui/react"
 import { Media } from "../../../../types/types"
 import { Carousel } from "react-responsive-carousel"
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons"
+import {
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  ExternalLinkIcon,
+} from "@chakra-ui/icons"
 // @ts-ignore
 import useMobileDetect from "use-mobile-detect-hook"
 
@@ -13,24 +24,61 @@ export const MediaComponent = ({ medias }: { medias: Media[] }) => {
 
   if (medias.length === 1 && medias[0].type === 0)
     return (
-      <Image
-        src={"/api/cors/" + medias[0].mediaUrl}
-        alt={"image"}
-        roundedTop="lg"
-        loading={"lazy"}
-      />
+      <Container position={"relative"} padding={0}>
+        <Image
+          key={medias[0].mediaUrl}
+          src={"/api/cors/" + medias[0].mediaUrl}
+          alt={"image"}
+          roundedTop="lg"
+          loading={"lazy"}
+        />
+        <IconButton
+          key={`external-button-${medias[0].mediaUrl}`}
+          as={"a"}
+          href={medias[0].mediaUrl}
+          target={"_blank"}
+          size={"xs"}
+          colorScheme={"whiteAlpha"}
+          color={"black"}
+          aria-label="download"
+          icon={<ExternalLinkIcon />}
+          position={"absolute"}
+          zIndex={2}
+          top={15}
+          right={15}
+        />
+      </Container>
     )
 
   if (medias.length === 1 && medias[0].type === 1)
     return (
-      <video
-        src={"/api/cors/" + medias[0].mediaUrl}
-        poster={
-          medias[0].previewUrl ? "/api/cors/" + medias[0].previewUrl : undefined
-        }
-        controls
-        loop
-      />
+      <Container position={"relative"} padding={0}>
+        <video
+          src={"/api/cors/" + medias[0].mediaUrl}
+          poster={
+            medias[0].previewUrl
+              ? "/api/cors/" + medias[0].previewUrl
+              : undefined
+          }
+          controls
+          loop
+        />
+        <IconButton
+          key={`external-button-${medias[0].mediaUrl}`}
+          as={"a"}
+          href={medias[0].mediaUrl}
+          target={"_blank"}
+          size={"xs"}
+          colorScheme={"whiteAlpha"}
+          color={"black"}
+          aria-label="download"
+          icon={<ExternalLinkIcon />}
+          position={"absolute"}
+          zIndex={2}
+          top={15}
+          right={15}
+        />
+      </Container>
     )
 
   return (
@@ -68,20 +116,55 @@ export const MediaComponent = ({ medias }: { medias: Media[] }) => {
       >
         {medias.map((i) => {
           return i.type === 0 ? (
-            <img
-              key={i.id}
-              src={"/api/cors/" + i.mediaUrl}
-              alt={"image"}
-              loading={"lazy"}
-            />
+            <Container position={"relative"} padding={0}>
+              <Image
+                key={i.id}
+                src={"/api/cors/" + i.mediaUrl}
+                alt={"image"}
+                roundedTop="lg"
+                loading={"lazy"}
+              />
+              <IconButton
+                key={`external-button-${i.id}`}
+                as={"a"}
+                href={i.mediaUrl}
+                target={"_blank"}
+                size={"xs"}
+                colorScheme={"whiteAlpha"}
+                color={"black"}
+                aria-label="download"
+                icon={<ExternalLinkIcon />}
+                position={"absolute"}
+                zIndex={2}
+                top={15}
+                right={15}
+              />
+            </Container>
           ) : i.type === 1 ? (
-            <video
-              key={i.id}
-              src={"/api/cors/" + i.mediaUrl}
-              poster={i.previewUrl ? "/api/cors/" + i.previewUrl : undefined}
-              controls
-              loop
-            />
+            <Container position={"relative"} padding={0}>
+              <video
+                key={i.id}
+                src={"/api/cors/" + i.mediaUrl}
+                poster={i.previewUrl ? "/api/cors/" + i.previewUrl : undefined}
+                controls
+                loop
+              />
+              <IconButton
+                key={`external-button-${i.id}`}
+                as={"a"}
+                href={i.mediaUrl}
+                target={"_blank"}
+                size={"xs"}
+                colorScheme={"whiteAlpha"}
+                color={"black"}
+                aria-label="download"
+                icon={<ExternalLinkIcon />}
+                position={"absolute"}
+                zIndex={2}
+                top={15}
+                right={15}
+              />
+            </Container>
           ) : (
             <></>
           )
